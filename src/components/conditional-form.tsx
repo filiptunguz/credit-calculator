@@ -21,10 +21,10 @@ export default function ConditionalForm() {
 		<Card className="mx-auto w-[510px] max-w-full">
 			<Tabs defaultValue="mortgage">
 				<TabsList className="rounded-b-none px-1.5 pb-1.5 -mx-6 -mt-6 w-[calc(100%_+_3rem)]">
-					<TabsTrigger value="mortgage" className="flex-1 uppercase rounded-bl-none">
+					<TabsTrigger value="mortgage" className="rounded-tl-3xl flex-1 uppercase">
 						Mortgage
 					</TabsTrigger>
-					<TabsTrigger value="cash" className="flex-1 uppercase rounded-br-none">
+					<TabsTrigger value="cash" className="rounded-tr-3xl flex-1 uppercase">
 						Cash
 					</TabsTrigger>
 				</TabsList>
