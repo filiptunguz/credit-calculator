@@ -11,6 +11,7 @@ import { EMPLOYMENT_TYPE_OPTIONS_MAP, type EmploymentType } from '@/lib/credit-h
 import { useState } from 'react';
 import { Label } from '@/components/ui/label.tsx';
 import { Checkbox } from '@/components/ui/checkbox.tsx';
+import ConditionInformation from '@/components/condition-information.tsx';
 
 export default function ConditionalForm() {
 	const [employmentType, setEmploymentType] = useState<EmploymentType | undefined>();
@@ -59,6 +60,9 @@ export default function ConditionalForm() {
 						</p>
 					</div>
 				</Label>
+				{employmentType && (
+					<ConditionInformation formData={{ employmentType, moreThanSixMonths }} />
+				)}
 			</Tabs>
 		</Card>
 	);

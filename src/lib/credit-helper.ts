@@ -1,4 +1,4 @@
-type CreditCapacityFields = {
+export type CreditFormData = {
 	employmentType: EmploymentType;
 	moreThanSixMonths: boolean;
 };
@@ -17,12 +17,12 @@ export const EMPLOYMENT_TYPE_OPTIONS_MAP = new Map<EmploymentType, string>()
 	.set('unemployed', 'Unemployed')
 	.set('other', 'Other');
 
-export const isCreditCapable = (formData: CreditCapacityFields) => {
+export const isCreditCapable = (formData: CreditFormData) => {
 	const { employmentType, moreThanSixMonths } = formData;
 	return employmentType === 'contract-unlimited' && moreThanSixMonths;
 };
 
-export const creditCapableText = (formData: CreditCapacityFields) => {
+export const creditCapableText = (formData: CreditFormData) => {
 	const { employmentType, moreThanSixMonths } = formData;
 
 	switch (employmentType) {
