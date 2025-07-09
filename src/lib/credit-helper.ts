@@ -1,7 +1,16 @@
+import { type CreditCapacityFields, MINIMUM_SALARY } from '@/schemas/credit-capacity.schema.ts';
+import { createContext, useContext } from 'react';
+
 export type CreditFormData = {
 	employmentType: EmploymentType;
 	moreThanSixMonths: boolean;
 };
+
+export const MORTGAGE_MINIMUM_PAYMENT_PERIOD = 7;
+export const CASH_MINIMUM_PAYMENT_PERIOD = 8;
+export const MORTGAGE_MAXIMUM_PAYMENT_PERIOD = 30;
+export const CASH_MAXIMUM_PAYMENT_PERIOD = 71;
+export const DEFAULT_NOMINAL_RATE = 5;
 
 export type EmploymentType =
 	| 'contract-unlimited'
@@ -42,3 +51,31 @@ export const creditCapableText = (formData: CreditFormData) => {
 			return 'If you do not fall into any of the listed categories, we advise you to contact your bank to find out the conditions for obtaining a loan.';
 	}
 };
+
+export const getDefaultCreditFormData = (isMortgage: boolean): CreditCapacityFields => {
+	return {
+		salary: MINIMUM_SALARY,
+		loanRate: 0,
+		cardDebts: 0,
+		acceptableMinus: 0,
+		paymentPeriod: isMortgage ? MORTGAGE_MAXIMUM_PAYMENT_PERIOD : CASH_MAXIMUM_PAYMENT_PERIOD,
+		nominalRate: DEFAULT_NOMINAL_RATE,
+	};
+};
+
+export type CreditCapacityStoreState = {
+	creditValues: CreditCapacityFields;
+	setCreditValues: (values: CreditCapacityFields) => void;
+};
+
+export const CreditCapacityContext = createContext<CreditCapacityStoreState | null>(null);
+
+export function useCreditCapacityContext() {
+	const context = useContext(CreditCapacityContext);
+
+	if (!context) {
+		throw new Error(`useCreditCapacityContext must be used within CreditCapacityContextProvider`);
+	}
+
+	return context;
+}

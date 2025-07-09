@@ -12,12 +12,14 @@ import { Form, FormControl, FormField, FormItem } from '@/components/ui/form.tsx
 import { Slider } from '@/components/ui/slider.tsx';
 import { Label } from '@/components/ui/label.tsx';
 import { useEffect } from 'react';
-
-const MORTGAGE_MINIMUM_PAYMENT_PERIOD = 7;
-const CASH_MINIMUM_PAYMENT_PERIOD = 8;
-const MORTGAGE_MAXIMUM_PAYMENT_PERIOD = 30;
-const CASH_MAXIMUM_PAYMENT_PERIOD = 71;
-const DEFAULT_NOMINAL_RATE = 5;
+import {
+	CASH_MAXIMUM_PAYMENT_PERIOD,
+	CASH_MINIMUM_PAYMENT_PERIOD,
+	getDefaultCreditFormData,
+	MORTGAGE_MAXIMUM_PAYMENT_PERIOD,
+	MORTGAGE_MINIMUM_PAYMENT_PERIOD,
+	useCreditCapacityContext,
+} from '@/lib/credit-helper.ts';
 
 type CreditCalculatorProps = {
 	isMortgage: boolean;
@@ -25,17 +27,11 @@ type CreditCalculatorProps = {
 };
 
 export default function CreditCalculator({ isMortgage, isDisabled }: CreditCalculatorProps) {
+	const { setCreditValues } = useCreditCapacityContext();
 	const form = useForm<CreditCapacityFields>({
 		resolver: zodResolver(CreditCapacitySchema),
 		mode: 'onChange', // validate on every change
-		defaultValues: {
-			salary: MINIMUM_SALARY,
-			loanRate: 0,
-			cardDebts: 0,
-			acceptableMinus: 0,
-			paymentPeriod: isMortgage ? MORTGAGE_MAXIMUM_PAYMENT_PERIOD : CASH_MAXIMUM_PAYMENT_PERIOD,
-			nominalRate: DEFAULT_NOMINAL_RATE,
-		},
+		defaultValues: getDefaultCreditFormData(isMortgage),
 	});
 
 	useEffect(() => {
@@ -49,7 +45,7 @@ export default function CreditCalculator({ isMortgage, isDisabled }: CreditCalcu
 
 	useEffect(() => {
 		const subscription = form.watch((value) => {
-			console.log(value);
+			setCreditValues(value as CreditCapacityFields);
 		});
 		return () => subscription.unsubscribe();
 	}, [form]);
