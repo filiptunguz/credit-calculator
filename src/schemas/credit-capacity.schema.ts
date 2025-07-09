@@ -10,8 +10,41 @@ export const CreditCapacitySchema = z
 		acceptableMinus: z.number().min(0, 'Acceptable minus must be a positive number'),
 		paymentPeriod: z.number(),
 	})
-	.refine((data) => {
-		return data.loanRate + data.cardDebts <= data.salary;
-	}, 'Total of loan rate and card debts must not exceed salary.');
+	.refine(
+		(data) => {
+			return data.loanRate + data.cardDebts <= data.salary;
+		},
+		{
+			message: 'Total of loan rate and card debts must not exceed salary.',
+			path: ['salary'],
+		},
+	)
+	.refine(
+		(data) => {
+			return data.loanRate + data.cardDebts <= data.salary;
+		},
+		{
+			message: 'Total of loan rate and card debts must not exceed salary.',
+			path: ['loanRate'],
+		},
+	)
+	.refine(
+		(data) => {
+			return data.loanRate + data.cardDebts <= data.salary;
+		},
+		{
+			message: 'Total of loan rate and card debts must not exceed salary.',
+			path: ['cardDebts'],
+		},
+	)
+	.refine(
+		(data) => {
+			return data.acceptableMinus <= data.salary;
+		},
+		{
+			message: 'Acceptable minus must not exceed salary.',
+			path: ['acceptableMinus'],
+		},
+	);
 
 export type CreditCapacityFields = z.infer<typeof CreditCapacitySchema>;
