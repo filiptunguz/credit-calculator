@@ -2,6 +2,7 @@ import { Card } from '@/components/ui/card.tsx';
 import {
 	type CreditCapacityFields,
 	CreditCapacitySchema,
+	MAXIMUM_NOMINAL_RATE,
 	MINIMUM_SALARY,
 } from '@/schemas/credit-capacity.schema.ts';
 import { useForm } from 'react-hook-form';
@@ -16,6 +17,7 @@ const MORTGAGE_MINIMUM_PAYMENT_PERIOD = 7;
 const CASH_MINIMUM_PAYMENT_PERIOD = 8;
 const MORTGAGE_MAXIMUM_PAYMENT_PERIOD = 30;
 const CASH_MAXIMUM_PAYMENT_PERIOD = 71;
+const DEFAULT_NOMINAL_RATE = 5;
 
 type CreditCalculatorProps = {
 	isMortgage: boolean;
@@ -32,6 +34,7 @@ export default function CreditCalculator({ isMortgage, isDisabled }: CreditCalcu
 			cardDebts: 0,
 			acceptableMinus: 0,
 			paymentPeriod: isMortgage ? MORTGAGE_MAXIMUM_PAYMENT_PERIOD : CASH_MAXIMUM_PAYMENT_PERIOD,
+			nominalRate: DEFAULT_NOMINAL_RATE,
 		},
 	});
 
@@ -159,6 +162,27 @@ export default function CreditCalculator({ isMortgage, isDisabled }: CreditCalcu
 											</div>
 										</div>
 									</div>
+								</FormControl>
+							</FormItem>
+						)}
+					/>
+					<FormField
+						control={form.control}
+						name="nominalRate"
+						render={({ field }) => (
+							<FormItem>
+								<FormControl>
+									<CreditCalculatorInput
+										id="acceptableMinusInput"
+										label="Nominal Rate"
+										symbol="%"
+										onValueChange={field.onChange}
+										value={field.value}
+										min={0}
+										max={MAXIMUM_NOMINAL_RATE}
+										disabled={isDisabled}
+										error={form.formState.errors.nominalRate?.message}
+									/>
 								</FormControl>
 							</FormItem>
 						)}

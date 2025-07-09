@@ -4,9 +4,11 @@ import type { ChangeEvent, ComponentProps } from 'react';
 
 export default function CreditCalculatorInput({
 	label,
+	symbol = '€',
 	...props
 }: ComponentProps<'input'> & {
 	label: string;
+	symbol?: string;
 	error?: string;
 	onValueChange: (value: number) => void;
 }) {
@@ -19,7 +21,7 @@ export default function CreditCalculatorInput({
 			<div className="flex gap-4 justify-between">
 				<Label htmlFor={props.id}>{label}:</Label>
 				<div className="flex items-center gap-2">
-					<span>€</span>
+					<span>{symbol}</span>
 					<Input type="number" onChange={onChange} {...props} />
 				</div>
 			</div>
