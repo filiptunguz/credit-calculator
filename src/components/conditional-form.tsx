@@ -7,19 +7,38 @@ import {
 	SelectItem,
 	SelectValue,
 } from '@/components/ui/select.tsx';
-import { EMPLOYMENT_TYPE_OPTIONS_MAP, type EmploymentType } from '@/lib/credit-helper.ts';
-import { useState } from 'react';
+import {
+	EMPLOYMENT_TYPE_OPTIONS_MAP,
+	type EmploymentType,
+	isCreditCapable,
+} from '@/lib/credit-helper.ts';
+import { useEffect, useState } from 'react';
 import { Label } from '@/components/ui/label.tsx';
 import { Checkbox } from '@/components/ui/checkbox.tsx';
 import ConditionInformation from '@/components/condition-information.tsx';
 
-export default function ConditionalForm() {
+export type CreditType = 'mortgage' | 'cash';
+
+type ConditionalFormProps = {
+	setDisabled: (disabled: boolean) => void;
+	setCreditType: (type: CreditType) => void;
+};
+
+export default function ConditionalForm({ setDisabled, setCreditType }: ConditionalFormProps) {
 	const [employmentType, setEmploymentType] = useState<EmploymentType | undefined>();
 	const [moreThanSixMonths, setMoreThanSixMonths] = useState<boolean>(false);
 
+	useEffect(() => {
+		if (employmentType) {
+			setDisabled(!isCreditCapable({ employmentType, moreThanSixMonths }));
+		} else {
+			setDisabled(true);
+		}
+	}, [employmentType, moreThanSixMonths]);
+
 	return (
-		<Card className="mx-auto w-[510px] max-w-full">
-			<Tabs defaultValue="mortgage">
+		<Card>
+			<Tabs defaultValue="mortgage" onValueChange={(value) => setCreditType(value as CreditType)}>
 				<TabsList className="rounded-b-none px-1.5 pb-1.5 -mx-6 -mt-6 w-[calc(100%_+_3rem)]">
 					<TabsTrigger value="mortgage" className="rounded-tl-3xl flex-1 uppercase">
 						Mortgage
