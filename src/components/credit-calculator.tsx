@@ -172,8 +172,10 @@ export default function CreditCalculator({ isMortgage, isDisabled }: CreditCalcu
 										id="acceptableMinusInput"
 										label="Nominal Rate"
 										symbol="%"
+										symbolAfter
 										onValueChange={field.onChange}
 										value={field.value}
+										step={0.01}
 										min={0}
 										max={MAXIMUM_NOMINAL_RATE}
 										disabled={isDisabled}
