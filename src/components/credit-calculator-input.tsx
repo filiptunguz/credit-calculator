@@ -5,22 +5,24 @@ import type { ChangeEvent, ComponentProps } from 'react';
 export default function CreditCalculatorInput({
 	label,
 	symbol = '€',
+	symbolAfter = false,
 	...props
 }: ComponentProps<'input'> & {
 	label: string;
 	symbol?: string;
+	symbolAfter?: boolean;
 	error?: string;
 	onValueChange: (value: number) => void;
 }) {
 	const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-		props.onValueChange(parseInt(e.target.value ?? 0));
+		props.onValueChange(Number(e.target.value ?? 0));
 	};
 
 	return (
 		<div>
 			<div className="flex gap-4 justify-between">
 				<Label htmlFor={props.id}>{label}:</Label>
-				<div className="flex items-center gap-2">
+				<div className={`flex items-center gap-2${symbolAfter ? ' flex-row-reverse' : ''}`}>
 					<span>{symbol}</span>
 					<Input type="number" onChange={onChange} {...props} />
 				</div>
