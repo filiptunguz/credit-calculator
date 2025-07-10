@@ -13,7 +13,7 @@ export default function App() {
 			<ConditionalForm setCreditType={setCreditType} setDisabled={setDisabled} />
 			<CreditCapacityContextProvider isMortgage={creditType === 'mortgage'}>
 				<CreditCalculator isMortgage={creditType === 'mortgage'} isDisabled={isDisabled} />
-				<CreditPossibilities isMortgage={creditType === 'mortgage'} />
+				<CreditPossibilities isMortgage={creditType === 'mortgage'} isDisabled={isDisabled} />
 			</CreditCapacityContextProvider>
 		</div>
 	);
